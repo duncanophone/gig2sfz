@@ -1,0 +1,36 @@
+name: Build gig2sfz Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            git
+            make
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-libgig
+
+      - name: Build gig2sfz
+        shell: msys2 {0}
+        run: |
+          make
+          ls -l
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: gig2sfz-windows
+          path: gig2sfz.exe
