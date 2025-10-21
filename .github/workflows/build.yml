@@ -32,7 +32,7 @@ jobs:
         run: |
           git clone https://github.com/linuxsampler/libgig.git
           cd libgig
-          ./autogen.sh
+          ./autogen.sh || true
           ./configure --prefix=/mingw64
           make -j$(nproc)
           make install
@@ -40,11 +40,5 @@ jobs:
       - name: Build gig2sfz
         shell: msys2 {0}
         run: |
+          cd $GITHUB_WORKSPACE
           make
-          ls -l
-
-      - name: Upload binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: gig2sfz-windows
-          path: gig2sfz.exe
