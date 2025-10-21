@@ -21,7 +21,21 @@ jobs:
             git
             make
             mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-libgig
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-libtool
+            mingw-w64-x86_64-automake
+            mingw-w64-x86_64-autoconf
+            mingw-w64-x86_64-pkg-config
+
+      - name: Build libgig
+        shell: msys2 {0}
+        run: |
+          git clone https://github.com/linuxsampler/libgig.git
+          cd libgig
+          ./autogen.sh
+          ./configure --prefix=/mingw64
+          make -j$(nproc)
+          make install
 
       - name: Build gig2sfz
         shell: msys2 {0}
